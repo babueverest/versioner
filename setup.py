@@ -17,7 +17,7 @@ setup(
         "track of the version of your project."),
     license = "GPLv2",
     keywords = "version versioning tool revision mayor minor",
-    url = "http://packages.python.org/an_example_pypi_project",
+    url = "http://josetomastocino.com",
     packages=['versioner', 'tests'],
     scripts = ['versioner/versioner.py'],
     long_description=read('README.rst'),
