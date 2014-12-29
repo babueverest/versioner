@@ -16,12 +16,16 @@ You can install the last stable release of Versioner using pip:
 Usage
 -----
 
-Its usage is very simple. You can run ``versioner`` without arguments,
-this will create a ``VERSION`` file with a starting version of 0.0.1:
+Its usage is very simple. If you run ``versioner`` without arguments, it will
+print the version currently stored in a file named ``VERSION`` in the current
+folder. If such file does not exist, ``versioner`` creates it with an initial
+version of 0.0.1:
 
 ::
 
     $ versioner
+    0.0.1
+    $ cat VERSION
     0.0.1
 
 Versioner accepts a series of arguments to increase, decrease and set
