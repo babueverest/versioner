@@ -12,7 +12,7 @@ class TestBadFile(object):
         mayor, minor, revision = v.get_version_components()
         assert mayor == 0
         assert minor == 0
-        assert revision == 0
+        assert revision == 1
 
     def tearDown(self):
         os.remove("BADFILE")
