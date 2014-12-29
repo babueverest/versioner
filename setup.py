@@ -20,7 +20,7 @@ setup(
     url = "http://packages.python.org/an_example_pypi_project",
     packages=['versioner', 'tests'],
     scripts = ['versioner/versioner.py'],
-    long_description=read('README.md'),
+    long_description=read('README.rst'),
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
