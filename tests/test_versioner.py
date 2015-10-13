@@ -13,6 +13,7 @@ class TestBadFile(object):
         assert mayor == 0
         assert minor == 0
         assert revision == 1
+	assert build == 1
 
     def tearDown(self):
         os.remove("BADFILE")

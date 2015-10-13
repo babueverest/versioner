@@ -14,6 +14,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+#Extended to support build nubmer as well
+#Extended code by: Everest K.C.
+#
+#
 
 import sys
 import re
@@ -22,10 +27,10 @@ FILENAME = 'VERSION'
 
 
 class Versioner(object):
-    file_format = re.compile(r"(\d+)\.(\d+)\.(\d+)")
+    file_format = re.compile(r"(\d+)\.(\d+)\.(\d+).(\d+)")
 
     def __init__(self):
-        self._major, self._minor, self._revision = 0, 0, 1
+        self._major, self._minor, self._revision, self._build = 0, 0, 1, 1
 
     def open(self, filename=FILENAME):
         try:
@@ -36,20 +41,20 @@ class Versioner(object):
                     raise EnvironmentError
 
         except EnvironmentError:
-            file_contents = "0.0.1"
+            file_contents = "0.0.1.1"
 
         match = Versioner.file_format.match(file_contents)
-        self._major, self._minor, self._revision = (int(x) for x in match.groups())
+        self._major, self._minor, self._revision, self._build = (int(x) for x in match.groups())
 
     def save(self, filename=FILENAME):
         with open(filename, 'wb') as f:
-            f.write("{}.{}.{}".format(*self.get_version_components()))
+            f.write("{}.{}.{}.{}".format(*self.get_version_components()))
 
     def get_version(self):
-        return "{}.{}.{}".format(*self.get_version())
+        return "{}.{}.{}.{}".format(*self.get_version())
 
     def get_version_components(self):
-        return self._major, self._minor, self._revision
+        return self._major, self._minor, self._revision, self._build
 
     def set_major(self, major):
         assert isinstance(major, int)
@@ -63,17 +68,21 @@ class Versioner(object):
         assert isinstance(revision, int)
         self._revision = revision
 
-    def set_version(self, major, minor, revision):
+    def set_build(self, build):
+	assert isinstance(build, int)
+	self._build = build
+
+    def set_version(self, major, minor, revision, build):
         self.set_major(major)
         self.set_minor(minor)
         self.set_revision(revision)
-
+	self.set_build(build)
 
 def main():
     v = Versioner()
     v.open()
 
-    major, minor, revision = v.get_version_components()
+    major, minor, revision, build = v.get_version_components()
 
     arguments = sys.argv[1:]
 
@@ -104,10 +113,19 @@ def main():
             match = re.match(r"revision=(\d+)", argument)
             if match:
                 revision = int(match.group(1))
+	
+	elif argument == "+build":
+	    build += 1
+	elif argument == "-build":
+	    build -= 1 if build > 0 else 0
+	elif argument.startswith("build="):
+	    match = re.match(r"build=(\d+)", argument)
+	    if match:
+		revision = int(match.group(1))
 
-    print "{}.{}.{}".format(major, minor, revision)
+    print "{}.{}.{}.{}".format(major, minor, revision, build)
 
-    v.set_version(major, minor, revision)
+    v.set_version(major, minor, revision, build)
     v.save()
 
 if __name__ == '__main__':
